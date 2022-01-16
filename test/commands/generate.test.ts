@@ -1,6 +1,6 @@
 import { expect, test } from '@oclif/test'
 
-describe('generate', () => {
+describe('Generate', () => {
   test
     .stdout()
     .command(['generate'])

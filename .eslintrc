@@ -9,5 +9,8 @@
     "arrow-parens": 0,
     "comma-dangle": 0,
     "indent": ["error", 2, { "MemberExpression": "off"}]
-  }
+  },
+  "parserOptions": {
+    "warnOnUnsupportedTypeScriptVersion": false
+}
 }
