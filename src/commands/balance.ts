@@ -1,5 +1,6 @@
 import { Command, Flags } from '@oclif/core'
 import { ethers } from 'ethers'
+import { getProvider } from '../lib/network'
 
 export default class Balance extends Command {
   static description = 'Gets balance for a provided account.'
@@ -9,7 +10,6 @@ export default class Balance extends Command {
   ]
 
   static flags = {
-    // flag with a value (-a, --account=VALUE)
     account: Flags.string({ char: 'a', description: 'account' }),
   }
 
@@ -17,10 +17,12 @@ export default class Balance extends Command {
     this.log('Getting account balance from the network:')
     const { flags } = await this.parse(Balance)
     if (flags.account) {
-      const provider = ethers.getDefaultProvider()
+      const provider = getProvider()
       const balance = await provider.getBalance(flags.account)
       this.log(`Account: ${flags.account}`)
-      this.log(`Balance: ${balance}`)
+      this.log(`$SGB Balance: ${ethers.utils.formatEther(balance)}`)
+    } else {
+      this.log('Please provide an account number when running this command.')
     }
   }
 }
