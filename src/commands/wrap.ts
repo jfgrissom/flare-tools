@@ -37,22 +37,16 @@ export default class Wrap extends Command {
   public async run(): Promise<void> {
     const { flags } = await this.parse(Wrap)
 
-    if (flags.amount && flags.account && flags.key) {
-      this.log(`Wrapping ${flags.amount} for ${flags.account}`)
+    this.log(`Wrapping ${flags.amount} for ${flags.account}`)
 
-      // Setup the items needed to sign the transaction.
-      const provider = getProvider()
-      const signer = new ethers.Wallet(flags.key, provider)
+    // Setup the items needed to sign the transaction.
+    const provider = getProvider()
+    const signer = new ethers.Wallet(flags.key, provider)
 
-      // Setup the contract call.
-      const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, signer)
-      const wei = ethers.utils.parseEther(flags.amount)
-      const amount = wei.toString()
-      await wnat.deposit({ from: flags.account, value: amount })
-    } else {
-      this.log(
-        'Please provide an account number, a private key, and an amount when running this command. Try wrap --help for more information.'
-      )
-    }
+    // Setup the contract call.
+    const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, signer)
+    const wei = ethers.utils.parseEther(flags.amount)
+    const amount = wei.toString()
+    await wnat.deposit({ from: flags.account, value: amount })
   }
 }

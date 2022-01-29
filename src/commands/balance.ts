@@ -13,7 +13,7 @@ export default class Balance extends Command {
   ]
 
   static flags = {
-    account: Flags.string({ char: 'a', description: 'account' })
+    account: Flags.string({ char: 'a', description: 'account', required: true })
   }
 
   public async run(): Promise<void> {
