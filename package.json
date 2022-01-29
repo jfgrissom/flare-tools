@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@oclif/test": "^2",
+    "@typechain/ethers-v5": "^9.0.0",
     "@types/chai": "^4",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.4",
@@ -41,6 +42,7 @@
     "shx": "^0.3.3",
     "ts-node": "^10.2.1",
     "tslib": "^2.3.1",
+    "typechain": "^7.0.0",
     "typescript": "^4.4.3"
   },
   "oclif": {
@@ -63,8 +65,10 @@
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
+    "prebuild": "yarn types",
     "prepack": "yarn build && oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "types": "typechain --target=ethers-v5 artifacts/contracts/abis/*.json --out-dir=src/types",
     "version": "oclif readme && git add README.md"
   },
   "engines": {
