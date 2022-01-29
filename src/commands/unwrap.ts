@@ -47,7 +47,7 @@ export default class Wrap extends Command {
       // Setup the contract call.
       const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, signer)
       const amount = ethers.utils.parseEther(flags.amount)
-      await wnat.withdraw(amount)
+      await wnat.withdraw(amount, { from: flags.account })
     } else {
       this.log(
         'Please provide an account number, a private key, and an amount when running this command. Try wrap --help for more information.'
