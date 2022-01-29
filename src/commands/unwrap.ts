@@ -7,7 +7,7 @@ import { WRAP_NATIVE_CONTRACT } from '../constants/contract'
 
 export default class Wrap extends Command {
   static description =
-    'Wraps the amount of asset provided for the given account.'
+    'Unwraps the amount of asset provided for the given account.'
 
   static examples = [
     '<%= config.bin %> <%= command.id %> -a 0xE29FDd1b740913CB54404a1d50A3dfC40041f619 -k 0xc5e8f61d1ab959b397eecc0a37a6517b8e67a0e7cf1f4bce5591f3ed80199122 -m 10'
@@ -27,7 +27,7 @@ export default class Wrap extends Command {
     }),
     amount: Flags.string({
       char: 'm',
-      description: 'The amount to wrap.',
+      description: 'The amount to unwrap.',
       required: true
     })
   }
@@ -38,7 +38,7 @@ export default class Wrap extends Command {
     const { flags } = await this.parse(Wrap)
 
     if (flags.amount && flags.account && flags.key) {
-      this.log(`Wrapping ${flags.amount} for ${flags.account}`)
+      this.log(`Unwrapping ${flags.amount} for ${flags.account}`)
 
       // Setup the items needed to sign the transaction.
       const provider = getProvider()
@@ -46,9 +46,8 @@ export default class Wrap extends Command {
 
       // Setup the contract call.
       const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, signer)
-      const wei = ethers.utils.parseEther(flags.amount)
-      const amount = wei.toString()
-      await wnat.deposit({ from: flags.account, value: amount })
+      const amount = ethers.utils.parseEther(flags.amount)
+      await wnat.withdraw(amount)
     } else {
       this.log(
         'Please provide an account number, a private key, and an amount when running this command. Try wrap --help for more information.'

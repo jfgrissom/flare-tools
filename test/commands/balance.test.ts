@@ -6,7 +6,7 @@ describe('Balance', () => {
     .command([
       'balance',
       '--account',
-      '0xE29FDd1b740913CB54404a1d50A3dfC40041f619',
+      '0xE29FDd1b740913CB54404a1d50A3dfC40041f619'
     ])
     .it(
       'runs balance --account 0xE29FDd1b740913CB54404a1d50A3dfC40041f619',
