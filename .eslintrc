@@ -8,9 +8,10 @@
     "unicorn/prefer-node-protocol": 0,
     "arrow-parens": 0,
     "comma-dangle": 0,
-    "indent": ["error", 2, { "MemberExpression": "off"}]
+    "indent": ["error", 2, { "MemberExpression": "off"}],
+    "camelcase": ["error", { "ignoreImports": true }]
   },
   "parserOptions": {
     "warnOnUnsupportedTypeScriptVersion": false
-}
+  }
 }

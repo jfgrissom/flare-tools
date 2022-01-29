@@ -1,14 +1,14 @@
 import { Command, Flags } from '@oclif/core'
 import { ethers } from 'ethers'
 import { getProvider } from '../lib/network'
-import { WNat__factory } from '../types/factories/WNat__factory'
+import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
 
 export default class Wrap extends Command {
   static description =
     'Wraps the amount of asset provided for the given account.'
 
   static examples = [
-    `<%= config.bin %> <%= command.id %> -a 0xE29FDd1b740913CB54404a1d50A3dfC40041f619 -k 0xc5e8f61d1ab959b397eecc0a37a6517b8e67a0e7cf1f4bce5591f3ed80199122 -m 10`,
+    '<%= config.bin %> <%= command.id %> -a 0xE29FDd1b740913CB54404a1d50A3dfC40041f619 -k 0xc5e8f61d1ab959b397eecc0a37a6517b8e67a0e7cf1f4bce5591f3ed80199122 -m 10',
   ]
 
   static flags = {
@@ -44,7 +44,7 @@ export default class Wrap extends Command {
       const contractAddress = '0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED' // This is a fixed value on the network.
 
       // Setup the contract call.
-      const wnat = WNat__factory.connect(contractAddress, signer)
+      const wnat = WrapNative.connect(contractAddress, signer)
       const wei = ethers.utils.parseEther(flags.amount)
       const amount = wei.toString()
       await wnat.deposit({ from: flags.account, value: amount })
