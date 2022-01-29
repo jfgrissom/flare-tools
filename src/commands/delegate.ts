@@ -1,11 +1,9 @@
 import { Command, Flags } from '@oclif/core'
 import { ethers } from 'ethers'
-
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
-import { WRAP_NATIVE_CONTRACT } from '../constants/contract'
 
-export default class Wrap extends Command {
+export default class Delegate extends Command {
   static description =
     'Wraps the amount of asset provided for the given account.'
 
@@ -35,7 +33,7 @@ export default class Wrap extends Command {
   static args = [{ name: 'account' }, { name: 'key' }, { name: 'amount' }]
 
   public async run(): Promise<void> {
-    const { flags } = await this.parse(Wrap)
+    const { flags } = await this.parse(Delegate)
 
     if (flags.amount && flags.account && flags.key) {
       this.log(`Wrapping ${flags.amount} for ${flags.account}`)
@@ -43,9 +41,10 @@ export default class Wrap extends Command {
       // Setup the items needed to sign the transaction.
       const provider = getProvider()
       const signer = new ethers.Wallet(flags.key, provider)
+      const contractAddress = '0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED' // This is a fixed value on the network.
 
       // Setup the contract call.
-      const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, signer)
+      const wnat = WrapNative.connect(contractAddress, signer)
       const wei = ethers.utils.parseEther(flags.amount)
       const amount = wei.toString()
       await wnat.deposit({ from: flags.account, value: amount })

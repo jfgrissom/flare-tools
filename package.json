@@ -24,6 +24,7 @@
     "ethers": "^5.5.3"
   },
   "devDependencies": {
+    "@ethersproject/bytes": "^5.0.0",
     "@oclif/test": "^2",
     "@typechain/ethers-v5": "^9.0.0",
     "@types/chai": "^4",
@@ -62,7 +63,7 @@
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
-    "lint": "eslint . --ext .ts --config .eslintrc",
+    "lint": "eslint . --ext .ts --config .eslintrc --fix",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
     "prebuild": "yarn types",
