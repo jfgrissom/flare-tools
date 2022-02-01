@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers } from 'ethers'
+import { ethers, utils } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
@@ -33,7 +33,7 @@ export default class Delegate extends Command {
     }),
     amount: Flags.string({
       char: 'm',
-      description: 'The amount to delegate.',
+      description: 'The amount to delegate in percentage (50 = 50%).',
       required: true
     })
   }
@@ -49,7 +49,7 @@ export default class Delegate extends Command {
     const { flags } = await this.parse(Delegate)
 
     this.log(
-      `Delegating ${flags.amount} $WSGB from ${flags.account} to ${flags.provider}.`
+      `Delegating ${flags.amount}% of $WSGB from ${flags.account} to ${flags.provider}.`
     )
 
     // Setup the items needed to sign the transaction.
@@ -59,8 +59,21 @@ export default class Delegate extends Command {
 
     // Setup the contract call.
     const wnat = WrapNative.connect(contractAddress, signer)
-    const wei = ethers.utils.parseEther(flags.amount)
-    const amount = wei.toString()
-    await wnat.delegateExplicit(flags.provider, amount)
+    // const amount = Number(flags.amount)
+    const gasPrice = await provider.getGasPrice()
+    // const maxFee = await provider.estimateGas()
+    this.log('Gas Price:', ethers.utils.formatUnits(gasPrice))
+
+    const gasLimit = ethers.BigNumber.from(gasPrice.toNumber() * 3)
+    this.log('Gas Limit:', gasLimit.toString())
+    this.log('Gas Limit a s ETH:', ethers.utils.formatUnits(gasLimit))
+    this.log('Gas Limit as STR:', ethers.BigNumber.from(gasLimit).toString())
+
+    // const amount = ethers.BigNumber.from(flags.amount)
+    // this.log('Amount:', amount.toString())
+
+    await wnat.delegate(flags.provider, ethers.BigNumber.from(flags.amount), {
+      from: flags.account
+    })
   }
 }

@@ -48,5 +48,6 @@ export default class Wrap extends Command {
     const wei = ethers.utils.parseEther(flags.amount)
     const amount = wei.toString()
     await wnat.deposit({ from: flags.account, value: amount })
+    this.log(`Wrapped ${amount} $SGB.`)
   }
 }

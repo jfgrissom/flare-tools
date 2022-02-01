@@ -33,7 +33,7 @@ export default class Undelegate extends Command {
     })
   }
 
-  static args = [{ name: 'account' }, { name: 'key' }, { name: 'amount' }]
+  static args = [{ name: 'account' }, { name: 'key' }, { name: 'provider' }]
 
   public async run(): Promise<void> {
     const { flags } = await this.parse(Undelegate)
@@ -49,6 +49,6 @@ export default class Undelegate extends Command {
 
     // Setup the contract call.
     const wnat = WrapNative.connect(contractAddress, signer)
-    await wnat.undelegateAllExplicit([flags.provider], { from: flags.account })
+    await wnat.delegate(flags.provider, 0)
   }
 }

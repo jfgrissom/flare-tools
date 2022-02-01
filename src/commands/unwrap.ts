@@ -7,7 +7,7 @@ import { WRAP_NATIVE_CONTRACT } from '../constants/contract'
 
 export default class Wrap extends Command {
   static description =
-    'Unwraps the amount of asset provided for the given account.'
+    'Unwraps the amount of asset provided for the given account. Note you can only unwrap non delegated tokens.'
 
   static examples = [
     '<%= config.bin %> <%= command.id %> -a 0xE29FDd1b740913CB54404a1d50A3dfC40041f619 -k 0xc5e8f61d1ab959b397eecc0a37a6517b8e67a0e7cf1f4bce5591f3ed80199122 -m 10'
