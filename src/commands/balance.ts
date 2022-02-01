@@ -19,18 +19,20 @@ export default class Balance extends Command {
   public async run(): Promise<void> {
     this.log('Getting account balance from the network:')
     const { flags } = await this.parse(Balance)
-    if (flags.account) {
-      const provider = getProvider()
-      const sgbBalance = await provider.getBalance(flags.account)
-      this.log('Account: ', flags.account)
-      this.log('$SGB Balance: ', ethers.utils.formatEther(sgbBalance))
 
-      // Setup the contract call.
-      const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, provider)
-      const wsgbBalance = await wnat.balanceOf(flags.account)
-      this.log('$WSGB Balance: ', ethers.utils.formatEther(wsgbBalance))
-    } else {
-      this.log('Please provide an account number when running this command.')
-    }
+    const provider = getProvider()
+    const sgbBalance = await provider.getBalance(flags.account)
+    this.log('Account: ', flags.account)
+    this.log('$SGB Balance: ', ethers.utils.formatEther(sgbBalance))
+
+    // Setup the contract call.
+    const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, provider)
+    const wsgbBalance = await wnat.balanceOf(flags.account)
+    this.log('$WSGB Balance: ', ethers.utils.formatEther(wsgbBalance))
+
+    const votingPower = await wnat.votePowerOf(flags.account)
+    this.log('Voting Power:', ethers.utils.formatEther(votingPower))
+
+    // TODO: Who are we delegated too? Hit up the Explorer API and calculate it.
   }
 }
