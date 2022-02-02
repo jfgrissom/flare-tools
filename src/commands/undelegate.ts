@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
@@ -47,8 +47,27 @@ export default class Undelegate extends Command {
     const signer = new ethers.Wallet(flags.key, provider)
     const contractAddress = WRAP_NATIVE_CONTRACT.ADDRESS // This is a fixed value on the network.
 
-    // Setup the contract call.
+    // Setup the contract calls.
     const wnat = WrapNative.connect(contractAddress, signer)
-    await wnat.delegate(flags.provider, 0)
+
+    const delegationMode = await wnat.delegationModeOf(flags.account)
+    // delegation mode: 0 = NOTSET, 1 = PERCENTAGE, 2 = AMOUNT (i.e. explicit)
+    switch (delegationMode.toNumber()) {
+      case 1:
+        this.log('Undelegating percentage based delegations.')
+        await wnat.delegate(flags.provider, 0)
+        await wnat.undelegateAll({ from: flags.account })
+        break
+      case 2:
+        this.log('Undelegating percentage based your explicit delegations.')
+        await wnat.delegateExplicit(flags.provider, 0)
+        await wnat.undelegateAllExplicit([flags.account], {
+          from: flags.account
+        })
+        break
+      default:
+        this.log('Your current delegation mode is not set.')
+        break
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
@@ -31,7 +31,40 @@ export default class Balance extends Command {
     this.log('$WSGB Balance: ', ethers.utils.formatEther(wsgbBalance))
 
     const votingPower = await wnat.votePowerOf(flags.account)
-    this.log('Voting Power:', ethers.utils.formatEther(votingPower))
+    this.log(
+      '$WSGB Remaining Voting Power:',
+      ethers.utils.formatEther(votingPower)
+    )
+
+    const delegationMode = await wnat.delegationModeOf(flags.account)
+    // delegation mode: 0 = NOTSET, 1 = PERCENTAGE, 2 = AMOUNT (i.e. explicit)
+    let delegates: [string[], BigNumber[], BigNumber, BigNumber] & {
+      _delegateAddresses: string[]
+      _bips: BigNumber[]
+      _count: BigNumber
+      _delegationMode: BigNumber
+    }
+    switch (delegationMode.toNumber()) {
+      case 1:
+        this.log('Your current delegation mode is set to Percentage.')
+        // TODO: delegates is an array.
+        delegates = await wnat.delegatesOf(flags.account)
+        if (delegates[0].length > 0) {
+          this.log(
+            `You are delegating ${(
+              Number(delegates[1]) / 100
+            ).toString()}% of your $SGB to ${delegates[0].toString()}`
+          )
+        }
+
+        break
+      case 2:
+        this.log('Your current delegation mode is set to an Explicit Amount.')
+        break
+      default:
+        this.log('Your current delegation mode is not set.')
+        break
+    }
 
     // TODO: Who are we delegated too? Hit up the Explorer API and calculate it.
   }
