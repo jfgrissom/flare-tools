@@ -8,7 +8,7 @@
     "unicorn/prefer-node-protocol": 0,
     "arrow-parens": 0,
     "comma-dangle": ["error", "never"],
-    "indent": ["error", 2, { "MemberExpression": "off"}],
+    "indent": ["error", 2, { "MemberExpression": "off", "SwitchCase": 1}],
     "camelcase": ["error", { "ignoreImports": true }]
   },
   "parserOptions": {

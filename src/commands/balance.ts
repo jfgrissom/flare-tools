@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
@@ -32,6 +32,28 @@ export default class Balance extends Command {
 
     const votingPower = await wnat.votePowerOf(flags.account)
     this.log('Voting Power:', ethers.utils.formatEther(votingPower))
+
+    const delegationMode = await wnat.delegationModeOf(flags.account)
+    // delegation mode: 0 = NOTSET, 1 = PERCENTAGE, 2 = AMOUNT (i.e. explicit)
+    let delegates: [string[], BigNumber[], BigNumber, BigNumber] & {
+      _delegateAddresses: string[]
+      _bips: BigNumber[]
+      _count: BigNumber
+      _delegationMode: BigNumber
+    }
+    switch (delegationMode.toNumber()) {
+      case 1:
+        this.log('Your current delegation mode is set to Percentage.')
+        delegates = await wnat.delegatesOf(flags.account)
+        this.log('You are delegating to:', delegates)
+        break
+      case 2:
+        this.log('Your current delegation mode is set to an Explicit Amount.')
+        break
+      default:
+        this.log('Your current delegation mode is not set.')
+        break
+    }
 
     // TODO: Who are we delegated too? Hit up the Explorer API and calculate it.
   }

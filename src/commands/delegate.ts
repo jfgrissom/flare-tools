@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers, utils } from 'ethers'
+import { ethers } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
@@ -64,13 +64,13 @@ export default class Delegate extends Command {
     // const maxFee = await provider.estimateGas()
     this.log('Gas Price:', ethers.utils.formatUnits(gasPrice))
 
-    const gasLimit = ethers.BigNumber.from(gasPrice.toNumber() * 3)
-    this.log('Gas Limit:', gasLimit.toString())
-    this.log('Gas Limit a s ETH:', ethers.utils.formatUnits(gasLimit))
-    this.log('Gas Limit as STR:', ethers.BigNumber.from(gasLimit).toString())
+    // const gasLimit = ethers.BigNumber.from(gasPrice.toNumber() * 3)
+    // this.log('Gas Limit:', gasLimit.toString())
+    // this.log('Gas Limit as ETH:', ethers.utils.formatUnits(gasLimit))
+    // this.log('Gas Limit as STR:', ethers.BigNumber.from(gasLimit).toString())
 
     // const amount = ethers.BigNumber.from(flags.amount)
-    // this.log('Amount:', amount.toString())
+    // this.log('Percentage Amount:', amount.toString())
 
     await wnat.delegate(flags.provider, ethers.BigNumber.from(flags.amount), {
       from: flags.account
