@@ -47,7 +47,6 @@ export default class Balance extends Command {
     switch (delegationMode.toNumber()) {
       case 1:
         this.log('Your current delegation mode is set to Percentage.')
-        // TODO: delegates is an array.
         delegates = await wnat.delegatesOf(flags.account)
         if (delegates[0].length > 0) {
           this.log(
@@ -65,7 +64,5 @@ export default class Balance extends Command {
         this.log('Your current delegation mode is not set.')
         break
     }
-
-    // TODO: Who are we delegated too? Hit up the Explorer API and calculate it.
   }
 }

@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers, BigNumber } from 'ethers'
+import { ethers } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'

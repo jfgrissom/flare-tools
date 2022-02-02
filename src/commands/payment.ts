@@ -1,5 +1,5 @@
 import { Command, Flags } from '@oclif/core'
-import { ethers, BigNumber } from 'ethers'
+import { ethers } from 'ethers'
 
 import { getProvider } from '../lib/network'
 
