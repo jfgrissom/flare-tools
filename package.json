@@ -21,7 +21,7 @@
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.0.12",
     "crypto": "^1.0.1",
-    "ethers": "^5.5.3"
+    "ethers": "^5.5.4"
   },
   "devDependencies": {
     "@ethersproject/bytes": "^5.5.0",
