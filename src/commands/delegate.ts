@@ -60,19 +60,22 @@ export default class Delegate extends Command {
     // Setup the contract call.
     const wnat = WrapNative.connect(contractAddress, signer)
     // const amount = Number(flags.amount)
-    const gasPrice = await provider.getGasPrice()
+    // const gasPrice = await provider.getGasPrice()
     // const maxFee = await provider.estimateGas()
-    this.log('Gas Price:', ethers.utils.formatUnits(gasPrice))
+    // this.log('Gas Price:', ethers.utils.formatUnits(gasPrice))
 
     // const gasLimit = ethers.BigNumber.from(gasPrice.toNumber() * 3)
     // this.log('Gas Limit:', gasLimit.toString())
     // this.log('Gas Limit as ETH:', ethers.utils.formatUnits(gasLimit))
     // this.log('Gas Limit as STR:', ethers.BigNumber.from(gasLimit).toString())
 
-    // const amount = ethers.BigNumber.from(flags.amount)
-    // this.log('Percentage Amount:', amount.toString())
+    const amount = ethers.BigNumber.from(flags.amount)
+    this.log('Percentage Amount:', amount.toString())
 
-    await wnat.delegate(flags.provider, ethers.BigNumber.from(flags.amount), {
+    // Cast provided percentage to basis points.
+    const bips = Number(flags.amount) * 100
+
+    await wnat.delegate(flags.provider, ethers.BigNumber.from(bips), {
       from: flags.account
     })
   }

@@ -31,7 +31,10 @@ export default class Balance extends Command {
     this.log('$WSGB Balance: ', ethers.utils.formatEther(wsgbBalance))
 
     const votingPower = await wnat.votePowerOf(flags.account)
-    this.log('Voting Power:', ethers.utils.formatEther(votingPower))
+    this.log(
+      '$WSGB Remaining Voting Power:',
+      ethers.utils.formatEther(votingPower)
+    )
 
     const delegationMode = await wnat.delegationModeOf(flags.account)
     // delegation mode: 0 = NOTSET, 1 = PERCENTAGE, 2 = AMOUNT (i.e. explicit)
@@ -44,8 +47,16 @@ export default class Balance extends Command {
     switch (delegationMode.toNumber()) {
       case 1:
         this.log('Your current delegation mode is set to Percentage.')
+        // TODO: delegates is an array.
         delegates = await wnat.delegatesOf(flags.account)
-        this.log('You are delegating to:', delegates)
+        if (delegates[0].length > 0) {
+          this.log(
+            `You are delegating ${(
+              Number(delegates[1]) / 100
+            ).toString()}% of your $SGB to ${delegates[0].toString()}`
+          )
+        }
+
         break
       case 2:
         this.log('Your current delegation mode is set to an Explicit Amount.')
