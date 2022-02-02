@@ -24,7 +24,7 @@
     "ethers": "^5.5.3"
   },
   "devDependencies": {
-    "@ethersproject/bytes": "^5.0.0",
+    "@ethersproject/bytes": "^5.5.0",
     "@oclif/test": "^2",
     "@typechain/ethers-v5": "^9.0.0",
     "@types/chai": "^4",
