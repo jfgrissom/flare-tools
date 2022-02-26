@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
-import { WRAP_NATIVE_CONTRACT } from '../constants/contract'
+import { ContractAddresses } from '../constants/contract'
 
 export default class Wrap extends Command {
   static description =
@@ -44,7 +44,7 @@ export default class Wrap extends Command {
     const signer = new ethers.Wallet(flags.key, provider)
 
     // Setup the contract call.
-    const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, signer)
+    const wnat = WrapNative.connect(ContractAddresses.WRAP_NATIVE, signer)
     const wei = ethers.utils.parseEther(flags.amount)
     const amount = wei.toString()
     await wnat.deposit({ from: flags.account, value: amount })

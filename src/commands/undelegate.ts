@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
-import { WRAP_NATIVE_CONTRACT } from '../constants/contract'
+import { ContractAddresses } from '../constants/contract'
 
 export default class Undelegate extends Command {
   static description =
@@ -45,7 +45,8 @@ export default class Undelegate extends Command {
     // Setup the items needed to sign the transaction.
     const provider = getProvider()
     const signer = new ethers.Wallet(flags.key, provider)
-    const contractAddress = WRAP_NATIVE_CONTRACT.ADDRESS // This is a fixed value on the network.
+    console.log('Signer Created')
+    const contractAddress = ContractAddresses.WRAP_NATIVE // This is a fixed value on the network.
 
     // Setup the contract calls.
     const wnat = WrapNative.connect(contractAddress, signer)

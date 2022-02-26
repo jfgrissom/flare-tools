@@ -3,7 +3,7 @@ import { ethers, BigNumber } from 'ethers'
 
 import { getProvider } from '../lib/network'
 import { WNat__factory as WrapNative } from '../types/factories/WNat__factory'
-import { WRAP_NATIVE_CONTRACT } from '../constants/contract'
+import { ContractAddresses } from '../constants/contract'
 
 export default class Balance extends Command {
   static description = 'Gets balance for a provided account.'
@@ -26,7 +26,7 @@ export default class Balance extends Command {
     this.log('$SGB Balance: ', ethers.utils.formatEther(sgbBalance))
 
     // Setup the contract call.
-    const wnat = WrapNative.connect(WRAP_NATIVE_CONTRACT.ADDRESS, provider)
+    const wnat = WrapNative.connect(ContractAddresses.WRAP_NATIVE, provider)
     const wsgbBalance = await wnat.balanceOf(flags.account)
     this.log('$WSGB Balance: ', ethers.utils.formatEther(wsgbBalance))
 
